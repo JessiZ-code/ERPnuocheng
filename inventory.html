@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">批次库存查询</h2>
+
+<div class="card">
+    <div class="card-body">
+        {% for item in stock_data %}
+        <div class="mb-4">
+            <h6>
+                {{ item.name }} 
+                <span class="text-muted">(ID: {{ item.id }})</span>
+                <span class="badge bg-primary float-end">总库存：{{ item.total }} {{ item.unit }}</span>
+            </h6>
+            <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>批次号</th>
+                        <th>数量</th>
+                        <th>生产日期</th>
+                        <th>到期日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for batch in item.batches %}
+                    <tr>
+                        <td>{{ batch.batch_no }}</td>
+                        <td>{{ batch.quantity }}</td>
+                        <td>{{ batch.produce_date }}</td>
+                        <td>{{ batch.expire_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

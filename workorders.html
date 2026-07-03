@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">生产工单管理</h2>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>工单号</th>
+                    <th>批次号</th>
+                    <th>产品</th>
+                    <th>生产数量</th>
+                    <th>生产日期</th>
+                    <th>关联订单</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for wo in workorders %}
+                <tr>
+                    <td>{{ wo.wo_id }}</td>
+                    <td>{{ wo.batch_no }}</td>
+                    <td>{{ wo.product_name }}</td>
+                    <td>{{ wo.produce_qty }}</td>
+                    <td>{{ wo.produce_date }}</td>
+                    <td>{{ wo.order_id }}</td>
+                    <td>
+                        {% if wo.status == '待领料' %}
+                            <span class="badge bg-warning">{{ wo.status }}</span>
+                        {% elif wo.status == '生产中' %}
+                            <span class="badge bg-info">{{ wo.status }}</span>
+                        {% else %}
+                            <span class="badge bg-success">{{ wo.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if wo.status == '待领料' %}
+                        <a href="{{ url_for('pick_materials', wo_id=wo.wo_id) }}" class="btn btn-sm btn-primary">领料</a>
+                        {% elif wo.status == '生产中' %}
+                        <a href="{{ url_for('finish_production', wo_id=wo.wo_id) }}" class="btn btn-sm btn-success">完工入库</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

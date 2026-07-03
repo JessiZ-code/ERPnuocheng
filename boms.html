@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">BOM配方管理</h2>
+
+<div class="card mb-4">
+    <div class="card-header">创建定制BOM配方</div>
+    <div class="card-body">
+        <form method="post" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">成品名称</label>
+                <input type="text" name="product_name" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">客户名称</label>
+                <input type="text" name="customer" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">配方说明</label>
+                <input type="text" name="formula_desc" class="form-control" placeholder="如：60片/瓶，定制增强型配方">
+            </div>
+            <div class="col-12">
+                <label class="form-label">物料配方（格式：物料ID:用量, 多个用英文逗号分隔）</label>
+                <input type="text" name="materials" class="form-control" placeholder="示例：abc123:0.005,def456:1">
+                <div class="form-text">参考现有物料：
+                    {% for m in materials %}
+                        <span class="badge bg-secondary">{{ m.material_id }} - {{ m.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">创建BOM</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">配方列表</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>BOM ID</th>
+                    <th>成品名称</th>
+                    <th>对应客户</th>
+                    <th>配方说明</th>
+                    <th>物料数量</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bom in boms %}
+                <tr>
+                    <td>{{ bom.bom_id }}</td>
+                    <td>{{ bom.product_name }}</td>
+                    <td>{{ bom.customer }}</td>
+                    <td>{{ bom.formula_desc }}</td>
+                    <td>{{ bom.materials|length }}种</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

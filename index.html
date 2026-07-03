@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">经营仪表盘</h2>
+<div class="row">
+    {% for key, value in stats.items() %}
+    <div class="col-md-3">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h3 class="card-title text-primary">{{ value }}</h3>
+                <p class="card-text text-muted">{{ key }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="card mt-4">
+    <div class="card-body">
+        <h5>操作指引</h5>
+        <ol>
+            <li>先在「物料管理」添加原料、包材，并执行入库</li>
+            <li>在「BOM配方」创建客户定制产品配方</li>
+            <li>在「客户订单」录入OEM订单</li>
+            <li>生成生产工单 → 领料 → 完工入库 → 发货</li>
+            <li>在「成本核算」查看订单成本明细</li>
+        </ol>
+    </div>
+</div>
+{% endblock %}

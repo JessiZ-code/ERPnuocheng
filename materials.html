@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">物料管理</h2>
+
+<div class="card mb-4">
+    <div class="card-header">新增物料</div>
+    <div class="card-body">
+        <form method="post" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">物料名称</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">类型</label>
+                <select name="type" class="form-select">
+                    <option value="原料">原料</option>
+                    <option value="包材">包材</option>
+                    <option value="辅料">辅料</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">单位</label>
+                <input type="text" name="unit" class="form-control" placeholder="kg/个/盒" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">单价(元)</label>
+                <input type="number" step="0.01" name="price" class="form-control" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">保质期(天)</label>
+                <input type="number" name="shelf_life" class="form-control" value="365" required>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">供应商</label>
+                <input type="text" name="supplier" class="form-control">
+            </div>
+            <div class="col-md-2 align-self-end">
+                <button type="submit" class="btn btn-primary w-100">添加物料</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">物料列表</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>物料ID</th>
+                    <th>名称</th>
+                    <th>类型</th>
+                    <th>单位</th>
+                    <th>单价</th>
+                    <th>保质期</th>
+                    <th>供应商</th>
+                    <th>快捷入库</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mat in materials %}
+                <tr>
+                    <td>{{ mat.material_id }}</td>
+                    <td>{{ mat.name }}</td>
+                    <td>{{ mat.type }}</td>
+                    <td>{{ mat.unit }}</td>
+                    <td>{{ mat.unit_price }}</td>
+                    <td>{{ mat.shelf_life_days }}天</td>
+                    <td>{{ mat.supplier }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#stockInModal{{ mat.material_id }}">入库</button>
+                        <!-- 入库弹窗 -->
+                        <div class="modal fade" id="stockInModal{{ mat.material_id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">原料入库 - {{ mat.name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form method="get" action="{{ url_for('materials') }}">
+                                        <input type="hidden" name="action" value="stock_in">
+                                        <input type="hidden" name="mat_id" value="{{ mat.material_id }}">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">入库数量</label>
+                                                <input type="number" step="0.01" name="qty" class="form-control" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">批次号</label>
+                                                <input type="text" name="batch" class="form-control" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">生产日期</label>
+                                                <input type="date" name="date" class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                            <button type="submit" class="btn btn-primary">确认入库</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

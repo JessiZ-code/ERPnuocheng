@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">订单成本核算</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="post" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">选择订单</label>
+                <select name="order_id" class="form-select">
+                    {% for order in orders %}
+                    <option value="{{ order.order_id }}" {% if selected == order.order_id %}selected{% endif %}>
+                        {{ order.order_id }} - {{ order.customer_name }} - {{ order.product_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 align-self-end">
+                <button type="submit" class="btn btn-primary w-100">核算成本</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if cost_result %}
+<div class="card">
+    <div class="card-header">成本明细</div>
+    <div class="card-body">
+        <table class="table">
+            {% for key, value in cost_result.items() %}
+            <tr>
+                <th width="30%">{{ key }}</th>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
